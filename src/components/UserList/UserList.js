@@ -1,13 +1,15 @@
 import {useState} from "react";
 import Message from "../share/Message/Message";
-import {Button} from "@mui/material";
-
-
+import {Box, Button, TextField} from "@mui/material";
 
 function UserList(props) {
     const data = props.data;
     const [users, setUsers] = useState(props.data);
-    const [message, setMessage] = useState('');
+    const [message, setMessage] = useState();
+    const [form, setForm] = useState({
+        name: '',
+        email: '',
+    });
 
     let htmlElements = [];
 
@@ -46,30 +48,78 @@ function UserList(props) {
         }
     }
 
+    const handleClick = (e) => {
+        setForm({...form, [e.target.name]: e.target.value});
+    }
+
+
+    const submit = () => {
+        users.push(form);
+        setUsers([...users]);
+        setForm({
+            name: '',
+            email: ''
+        })
+    }
+
+
     return (
         <>
             <Message message={message}/>
-            <div className="card mt-2">
-                <div className="card-header">
-                    {props.title}
-                    <input type="text" onKeyUp={(e) => search(e)}/>
+            <div className="row">
+                <div className="col-12 col-md-4">
+                    <div className="card mt-2">
+                        <div className="card-header">
+                            Add user
+                        </div>
+                        <div className="card-body">
+                            <Box
+                                component="form"
+                                sx={{
+                                    '& > :not(style)': { m: 1, width: '25ch' },
+                                }}
+                                noValidate
+                                autoComplete="off"
+                            >
+                                {form.name ?
+                                    <TextField
+                                        id="outlined-basic" name="name" onChange={handleClick} value={form.name} label="Name" variant="outlined" />
+                                :
+                                    <TextField error
+                                        id="outlined-basic" name="name" onChange={handleClick} value={form.name} label="Name" variant="outlined" />
+                                }
+
+                                <TextField id="outlined-basic" name="email" onChange={handleClick} value={form.email} label="Email" variant="outlined" />
+                                <Button disabled={(!form.name || !form.email)} onClick={submit} variant="contained">Save</Button>
+                            </Box>
+                        </div>
+                    </div>
                 </div>
-                <div className="card-body">
-                    <table className="table">
-                        <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Email</th>
-                            <th></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {htmlElements}
-                        </tbody>
-                    </table>
+                <div className="col-12 col-md-8">
+                    <div className="card mt-2">
+                        <div className="card-header">
+                            {props.title}
+                            <input type="text" onKeyUp={(e) => search(e)}/>
+                        </div>
+                        <div className="card-body">
+                            <table className="table">
+                                <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Email</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {htmlElements}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
+
         </>
     )
 }
