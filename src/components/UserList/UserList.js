@@ -1,25 +1,13 @@
 import {useState} from "react";
+import Message from "../share/Message/Message";
+import {Button} from "@mui/material";
 
-const data = [
-    {
-        id: 1,
-        name: 'admin',
-        email: 'admin@example.com'
-    },
-    {
-        id: 2,
-        name: 'user',
-        email: 'user@example.com'
-    },
-    {
-        id: 3,
-        name: 'teo',
-        email: 'teo@example.com'
-    }
-];
 
-function UserList() {
-    const [users, setUsers] = useState(data)
+
+function UserList(props) {
+    const data = props.data;
+    const [users, setUsers] = useState(props.data);
+    const [message, setMessage] = useState('');
 
     let htmlElements = [];
 
@@ -30,7 +18,9 @@ function UserList() {
                 <td>{users[i].name}</td>
                 <td>{users[i].email}</td>
                 <td>
-                    <button onClick={() => deleteUser(i)} className="btn btn-danger">Delete</button></td>
+                    <Button variant="contained" color="error" onClick={() => deleteUser(i)}>Delete</Button>
+                    <button className="btn btn-primary" onClick={() => props.findUser(i)}>View</button>
+                </td>
             </tr>
         );
         htmlElements.push(html)
@@ -40,6 +30,7 @@ function UserList() {
         if (window.confirm('Are you sure you want to delete')) {
             users.splice(index, 1);
             setUsers([...users])
+            setMessage('Delete user successfully')
         }
     }
 
@@ -57,9 +48,10 @@ function UserList() {
 
     return (
         <>
+            <Message message={message}/>
             <div className="card mt-2">
                 <div className="card-header">
-                    UserList
+                    {props.title}
                     <input type="text" onKeyUp={(e) => search(e)}/>
                 </div>
                 <div className="card-body">
