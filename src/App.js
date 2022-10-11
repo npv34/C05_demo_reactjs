@@ -1,7 +1,5 @@
 import './App.css';
-import Navbar from "./components/Navbar/Navbar";
-import UserList from "./components/UserList/UserList";
-import Footer from "./components/Footer/Footer";
+import Register from "./pages/Register/Register";
 const users = [
     {
         id: 1,
@@ -28,12 +26,8 @@ function App() {
     }
 
   return (
-    <div className="App">
-        <Navbar />
-        <div className="container">
-            <UserList title={pageTitle} message={message} data={users} findUser={viewUser}/>
-            <Footer/>
-        </div>
+    <div className="container">
+        <Register/>
     </div>
   );
 }
