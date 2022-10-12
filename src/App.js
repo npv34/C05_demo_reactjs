@@ -1,33 +1,21 @@
 import './App.css';
-import Register from "./pages/Register/Register";
-const users = [
-    {
-        id: 1,
-        name: 'admin',
-        email: 'admin@example.com'
-    },
-    {
-        id: 2,
-        name: 'user',
-        email: 'user@example.com'
-    },
-    {
-        id: 3,
-        name: 'teo',
-        email: 'teo@example.com'
-    }
-];
+import {Route, Routes} from "react-router-dom"
+import Login from "./pages/Login/Login";
+import Master from "./pages/Master/Master";
+import UserList from "./components/UserList/UserList";
+import Dashboard from "./components/Dashboard/Dashboard";
+
 function App() {
-    const pageTitle = "User Manager";
-    const message = "Xin  chao"
-
-    const viewUser = (index) => {
-        alert(index)
-    }
-
   return (
+
     <div className="container">
-        <Register/>
+        <Routes>
+            <Route path="/login" element={<Login/>} />
+            <Route path="/admin" element={<Master/>} >
+                <Route path="" element={<Dashboard/>} />
+                <Route path="users" element={<UserList/>} />
+            </Route>
+        </Routes>
     </div>
   );
 }
